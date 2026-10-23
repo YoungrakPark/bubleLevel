@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A lime vial with its bubble centred between the two marks. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#C8F43B"
+        android:pathData="M34,43H74A11,11 0 0,1 74,65H34A11,11 0 0,1 34,43Z" />
+    <path
+        android:fillColor="#F4FFD6"
+        android:pathData="M46,54A8,6.5 0 1,1 62,54A8,6.5 0 1,1 46,54Z" />
+    <path
+        android:fillColor="#0D0E0C"
+        android:pathData="M43.5,45h1.6v18h-1.6zM62.9,45h1.6v18h-1.6z" />
+</vector>
