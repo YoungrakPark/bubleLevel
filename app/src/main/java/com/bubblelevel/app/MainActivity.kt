@@ -32,9 +32,13 @@ class MainActivity : ComponentActivity() {
         val settings = LevelSettings(this)
         val vibrator = vibrator()
         setContent {
-            LevelScreen(sensor, settings) {
-                vibrator?.vibrate(VibrationEffect.createOneShot(40, VibrationEffect.DEFAULT_AMPLITUDE))
-            }
+            LevelScreen(
+                sensor,
+                settings,
+                onLevel = { vibrator?.vibrate(VibrationEffect.createOneShot(40, VibrationEffect.DEFAULT_AMPLITUDE)) },
+                // Also drops the app from the recents list, so exiting feels final.
+                onExit = { finishAndRemoveTask() },
+            )
         }
     }
 

@@ -1,5 +1,7 @@
 package com.bubblelevel.app.ui
 
+import android.os.SystemClock
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -29,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -63,10 +66,14 @@ private const val TOLERANCE = 0.2f
 /** How far past tolerance a reading must go before the next return to level buzzes again. */
 private const val REARM_MARGIN = 0.1f
 
+/** A second back press within this window closes the app. */
+private const val EXIT_WINDOW_MS = 2000L
+
 private class Reading(val tilt: Tilt, val pose: Pose)
 
 @Composable
-fun LevelScreen(sensor: GravitySensor, settings: LevelSettings, onLevel: () -> Unit) {
+fun LevelScreen(sensor: GravitySensor, settings: LevelSettings, onLevel: () -> Unit, onExit: () -> Unit) {
+    var lastBack by remember { mutableLongStateOf(0L) }
     var offset by remember { mutableStateOf(settings.offset) }
     var alertOn by remember { mutableStateOf(settings.alertOn) }
     var held by remember { mutableStateOf<Reading?>(null) }
@@ -94,6 +101,15 @@ fun LevelScreen(sensor: GravitySensor, settings: LevelSettings, onLevel: () -> U
         if (toast != null) {
             delay(2200)
             toast = null
+        }
+    }
+    BackHandler {
+        val now = SystemClock.uptimeMillis()
+        if (now - lastBack < EXIT_WINDOW_MS) {
+            onExit()
+        } else {
+            lastBack = now
+            toast = "한 번 더 누르면 종료됩니다"
         }
     }
 
